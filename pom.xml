@@ -14,6 +14,9 @@
     <name>spring-boot-rest-calculator</name>
     <description>spring-boot-rest-calculator</description>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
     </properties>
     <dependencies>
