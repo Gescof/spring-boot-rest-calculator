@@ -42,7 +42,7 @@ public class CalculatorControllerAdvisor extends ResponseEntityExceptionHandler 
         return getConflictResponseEntity(ARITHMETIC_ERROR_MESSAGE, ex.getMessage());
     }
 
-    private static String getQueryParamsMapString(Map<String, String[]> queryParamsMap) {
+    private String getQueryParamsMapString(Map<String, String[]> queryParamsMap) {
         return queryParamsMap.keySet().stream()
                 .map(key -> key + "=" + Arrays.toString(queryParamsMap.get(key)))
                 .collect(Collectors.joining(", ", "{", "}"));
