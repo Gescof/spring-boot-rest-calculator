@@ -17,11 +17,12 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Map;
 
-public class CalculatorControllerAdvisorTest {
+class CalculatorControllerAdvisorTest {
     private final static LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(
             LocalDate.of(2021, 10, 23),
             LocalTime.of(12, 35, 59, 0)
     );
+
     @InjectMocks
     private CalculatorControllerAdvisor calculatorControllerAdvisor;
 
