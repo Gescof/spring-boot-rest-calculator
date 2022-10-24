@@ -1,1 +1,9 @@
-
+com:
+  gescof:
+    calculator:
+      api:
+        basePath: api/v1/calculator
+        sumPath: sum
+        subtractionPath: subtraction
+        multiplicationPath: multiplication
+        divisionPath: division
