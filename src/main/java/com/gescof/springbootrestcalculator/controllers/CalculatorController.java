@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("${com.gescof.calculator.api.basePath}")
 public class CalculatorController {
     private final CalculatorService calculatorService;
 
-    @GetMapping(value = "/sum", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "${com.gescof.calculator.api.sumPath}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultDTO> getSumResult(
             @RequestParam final String firstDecimal,
             @RequestParam final String secondDecimal
@@ -24,7 +24,7 @@ public class CalculatorController {
         return ResponseEntity.ok(calculatorService.getSumResult(firstDecimal, secondDecimal));
     }
 
-    @GetMapping(value = "/subtraction", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "${com.gescof.calculator.api.subtractionPath}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultDTO> getSubtractionResult(
             @RequestParam final String firstDecimal,
             @RequestParam final String secondDecimal
@@ -32,7 +32,7 @@ public class CalculatorController {
         return ResponseEntity.ok(calculatorService.getSubtractionResult(firstDecimal, secondDecimal));
     }
 
-    @GetMapping(value = "/multiplication", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "${com.gescof.calculator.api.multiplicationPath}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultDTO> getMultiplicationResult(
             @RequestParam final String firstDecimal,
             @RequestParam final String secondDecimal
@@ -40,7 +40,7 @@ public class CalculatorController {
         return ResponseEntity.ok(calculatorService.getMultiplicationResult(firstDecimal, secondDecimal));
     }
 
-    @GetMapping(value = "/division", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "${com.gescof.calculator.api.divisionPath}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultDTO> getDivisionResult(
             @RequestParam final String firstDecimal,
             @RequestParam final String secondDecimal
