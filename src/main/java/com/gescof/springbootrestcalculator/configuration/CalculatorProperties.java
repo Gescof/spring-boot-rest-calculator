@@ -15,4 +15,5 @@ public class CalculatorProperties {
     private String subtractionPath;
     private String multiplicationPath;
     private String divisionPath;
+    private String operationsPath;
 }

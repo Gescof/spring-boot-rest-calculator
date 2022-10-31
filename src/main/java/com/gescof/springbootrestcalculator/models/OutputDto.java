@@ -1,16 +1,15 @@
 package com.gescof.springbootrestcalculator.models;
 
-import com.gescof.springbootrestcalculator.models.enums.OperationType;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @Data
 public class OutputDto {
-    private OperationType operationType;
-    private BigDecimal firstDecimal;
-    private BigDecimal secondDecimal;
-    private BigDecimal result;
+    private List<OutputElementDto> operationsList;
+    private Long totalResults;
+    private Integer pageNumber;
+    private Integer pageSize;
 }

@@ -2,9 +2,12 @@ package com.gescof.springbootrestcalculator.services;
 
 import com.gescof.springbootrestcalculator.models.InputDto;
 import com.gescof.springbootrestcalculator.models.OutputDto;
+import com.gescof.springbootrestcalculator.models.OutputElementDto;
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
 import com.gescof.springbootrestcalculator.persistence.models.EOperation;
 import com.gescof.springbootrestcalculator.persistence.repositories.OperationRepository;
+import com.querydsl.core.types.Predicate;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,8 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 class CalculatorServiceTest {
     @InjectMocks
@@ -27,7 +33,7 @@ class CalculatorServiceTest {
     }
 
     @Test
-    void testShouldGetSumResultReturningResultDTO() {
+    void testShouldMakeSumOperationReturningOutputElementDto() {
         String firstDecimalStr = "2";
         String secondDecimalStr = "7";
         InputDto inputDto = InputDto.builder()
@@ -37,7 +43,7 @@ class CalculatorServiceTest {
         BigDecimal firstDecimal = new BigDecimal(firstDecimalStr);
         BigDecimal secondDecimal = new BigDecimal(secondDecimalStr);
         BigDecimal result = BigDecimal.valueOf(9);
-        OutputDto expectedOutputDto = OutputDto.builder()
+        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
                 .operationType(OperationType.SUM)
                 .firstDecimal(firstDecimal)
                 .secondDecimal(secondDecimal)
@@ -52,16 +58,16 @@ class CalculatorServiceTest {
         Mockito.when(mockedOperationRepository.save(Mockito.any()))
                 .thenReturn(expectedEOperation);
 
-        OutputDto sumResult = calculatorService.getSumResult(inputDto);
+        OutputElementDto sumResult = calculatorService.sumOperation(inputDto);
         Mockito.verify(mockedOperationRepository, Mockito.times(1)).save(Mockito.any());
         Assertions.assertEquals(
-                expectedOutputDto,
+                expectedOutputElementDto,
                 sumResult
         );
     }
 
     @Test
-    void testShouldGetSumResultThrowingNumberFormatException() {
+    void testShouldNotMakeSumOperationThrowingNumberFormatException() {
         String firstDecimalStr = "invalid_number";
         String secondDecimalStr = "7";
         InputDto inputDto = InputDto.builder()
@@ -71,12 +77,12 @@ class CalculatorServiceTest {
 
         Mockito.verify(mockedOperationRepository, Mockito.times(0)).save(Mockito.any());
         Assertions.assertThrows(
-                NumberFormatException.class, () -> calculatorService.getSumResult(inputDto)
+                NumberFormatException.class, () -> calculatorService.sumOperation(inputDto)
         );
     }
 
     @Test
-    void testShouldGetSubtractionResultReturningResultDTO() {
+    void testShouldMakeSubtractionOperationReturningOutputElementDto() {
         String firstDecimalStr = "-11";
         String secondDecimalStr = "3";
         InputDto inputDto = InputDto.builder()
@@ -86,7 +92,7 @@ class CalculatorServiceTest {
         BigDecimal firstDecimal = new BigDecimal(firstDecimalStr);
         BigDecimal secondDecimal = new BigDecimal(secondDecimalStr);
         BigDecimal result = BigDecimal.valueOf(-14);
-        OutputDto expectedOutputDto = OutputDto.builder()
+        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
                 .operationType(OperationType.SUBTRACTION)
                 .firstDecimal(firstDecimal)
                 .secondDecimal(secondDecimal)
@@ -101,16 +107,16 @@ class CalculatorServiceTest {
         Mockito.when(mockedOperationRepository.save(Mockito.any()))
                 .thenReturn(expectedEOperation);
 
-        OutputDto subtractionResult = calculatorService.getSubtractionResult(inputDto);
+        OutputElementDto subtractionResult = calculatorService.subtractionOperation(inputDto);
         Mockito.verify(mockedOperationRepository, Mockito.times(1)).save(Mockito.any());
         Assertions.assertEquals(
-                expectedOutputDto,
+                expectedOutputElementDto,
                 subtractionResult
         );
     }
 
     @Test
-    void testShouldGetSubtractionResultThrowingNumberFormatException() {
+    void testShouldNotMakeSubtractionOperationThrowingNumberFormatException() {
         String firstDecimalStr = "-11";
         String secondDecimalStr = "invalid_number";
         InputDto inputDto = InputDto.builder()
@@ -120,12 +126,12 @@ class CalculatorServiceTest {
 
         Mockito.verify(mockedOperationRepository, Mockito.times(0)).save(Mockito.any());
         Assertions.assertThrows(
-                NumberFormatException.class, () -> calculatorService.getSubtractionResult(inputDto)
+                NumberFormatException.class, () -> calculatorService.subtractionOperation(inputDto)
         );
     }
 
     @Test
-    void testShouldGetMultiplicationResultReturningResultDTO() {
+    void testShouldMakeMultiplicationOperationReturningOutputElementDto() {
         String firstDecimalStr = "20";
         String secondDecimalStr = "1";
         InputDto inputDto = InputDto.builder()
@@ -135,7 +141,7 @@ class CalculatorServiceTest {
         BigDecimal firstDecimal = new BigDecimal(firstDecimalStr);
         BigDecimal secondDecimal = new BigDecimal(secondDecimalStr);
         BigDecimal result = BigDecimal.valueOf(20);
-        OutputDto expectedOutputDto = OutputDto.builder()
+        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
                 .operationType(OperationType.MULTIPLICATION)
                 .firstDecimal(firstDecimal)
                 .secondDecimal(secondDecimal)
@@ -150,16 +156,16 @@ class CalculatorServiceTest {
         Mockito.when(mockedOperationRepository.save(Mockito.any()))
                 .thenReturn(expectedEOperation);
 
-        OutputDto multiplicationResult = calculatorService.getMultiplicationResult(inputDto);
+        OutputElementDto multiplicationResult = calculatorService.multiplicationOperation(inputDto);
         Mockito.verify(mockedOperationRepository, Mockito.times(1)).save(Mockito.any());
         Assertions.assertEquals(
-                expectedOutputDto,
+                expectedOutputElementDto,
                 multiplicationResult
         );
     }
 
     @Test
-    void testShouldGetMultiplicationResultThrowingNumberFormatException() {
+    void testShouldNotMakeMultiplicationOperationThrowingNumberFormatException() {
         String firstDecimalStr = "invalid_number";
         String secondDecimalStr = "invalid_number";
         InputDto inputDto = InputDto.builder()
@@ -169,12 +175,12 @@ class CalculatorServiceTest {
 
         Mockito.verify(mockedOperationRepository, Mockito.times(0)).save(Mockito.any());
         Assertions.assertThrows(
-                NumberFormatException.class, () -> calculatorService.getMultiplicationResult(inputDto)
+                NumberFormatException.class, () -> calculatorService.multiplicationOperation(inputDto)
         );
     }
 
     @Test
-    void testShouldGetDivisionResultReturningResultDTO() {
+    void testShouldMakeDivisionOperationReturningOutputElementDto() {
         String firstDecimalStr = "15";
         String secondDecimalStr = "5";
         InputDto inputDto = InputDto.builder()
@@ -184,7 +190,7 @@ class CalculatorServiceTest {
         BigDecimal firstDecimal = new BigDecimal(firstDecimalStr);
         BigDecimal secondDecimal = new BigDecimal(secondDecimalStr);
         BigDecimal result = BigDecimal.valueOf(3);
-        OutputDto expectedOutputDto = OutputDto.builder()
+        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
                 .operationType(OperationType.DIVISION)
                 .firstDecimal(firstDecimal)
                 .secondDecimal(secondDecimal)
@@ -199,41 +205,70 @@ class CalculatorServiceTest {
         Mockito.when(mockedOperationRepository.save(Mockito.any()))
                 .thenReturn(expectedEOperation);
 
-        OutputDto divisionResult = calculatorService.getDivisionResult(inputDto);
+        OutputElementDto divisionResult = calculatorService.divisionOperation(inputDto);
         Mockito.verify(mockedOperationRepository, Mockito.times(1)).save(Mockito.any());
         Assertions.assertEquals(
-                expectedOutputDto,
+                expectedOutputElementDto,
                 divisionResult
         );
     }
 
     @Test
-    void testShouldGetDivisionResultThrowingNumberFormatException() {
-        String firstDecimal = "";
-        String secondDecimal = " ";
+    void testShouldNotMakeDivisionOperationThrowingNumberFormatException() {
+        String firstDecimalStr = "";
+        String secondDecimalStr = " ";
         InputDto inputDto = InputDto.builder()
-                .firstDecimal(firstDecimal)
-                .secondDecimal(secondDecimal)
+                .firstDecimal(firstDecimalStr)
+                .secondDecimal(secondDecimalStr)
                 .build();
 
         Mockito.verify(mockedOperationRepository, Mockito.times(0)).save(Mockito.any());
         Assertions.assertThrows(
-                NumberFormatException.class, () -> calculatorService.getDivisionResult(inputDto)
+                NumberFormatException.class, () -> calculatorService.divisionOperation(inputDto)
         );
     }
 
     @Test
-    void testShouldGetDivisionResultThrowingArithmeticException() {
-        String firstDecimal = "9";
-        String secondDecimal = "0";
+    void testShouldNotMakeDivisionOperationThrowingArithmeticException() {
+        String firstDecimalStr = "9";
+        String secondDecimalStr = "0";
         InputDto inputDto = InputDto.builder()
-                .firstDecimal(firstDecimal)
-                .secondDecimal(secondDecimal)
+                .firstDecimal(firstDecimalStr)
+                .secondDecimal(secondDecimalStr)
                 .build();
 
         Mockito.verify(mockedOperationRepository, Mockito.times(0)).save(Mockito.any());
         Assertions.assertThrows(
-                ArithmeticException.class, () -> calculatorService.getDivisionResult(inputDto)
+                ArithmeticException.class, () -> calculatorService.divisionOperation(inputDto)
+        );
+    }
+
+    @Test
+    void testShouldGetOperationsReturningOutputDto() {
+        String inputId = "1234567890abc";
+        String inputOperationType = "MULTIPLICATION";
+        DateTime inputCreatedOn = DateTime.parse("2022-10-31T18:36:01.608Z");
+        DateTime inputUpdatedOn = DateTime.parse("2022-11-01T06:59:12.380Z");
+        Long totalResults = 0L;
+        Integer inputPageNumber = 1;
+        Integer inputPageSize = 5;
+        Page<EOperation> expectedQueriedResult = Page.empty();
+        OutputDto expectedOutputDto = OutputDto.builder()
+                .operationsList(Collections.emptyList())
+                .totalResults(totalResults)
+                .pageNumber(inputPageNumber)
+                .pageSize(inputPageSize)
+                .build();
+        Mockito.when(mockedOperationRepository.findAll((Predicate) Mockito.any(), (Pageable) Mockito.any()))
+                .thenReturn(expectedQueriedResult);
+
+        OutputDto getResult = calculatorService.getOperations(inputId, inputOperationType, inputCreatedOn, inputUpdatedOn,
+                inputPageNumber, inputPageSize);
+        Mockito.verify(mockedOperationRepository, Mockito.times(1))
+                .findAll((Predicate) Mockito.any(), (Pageable) Mockito.any());
+        Assertions.assertEquals(
+                getResult,
+                expectedOutputDto
         );
     }
 }
