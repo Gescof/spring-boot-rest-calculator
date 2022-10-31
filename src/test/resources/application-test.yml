@@ -11,3 +11,4 @@ com:
         subtractionPath: /subtraction
         multiplicationPath: /multiplication
         divisionPath: /division
+        operationsPath: /operations

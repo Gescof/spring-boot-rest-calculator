@@ -25,9 +25,11 @@ class CalculatorPropertiesTests {
         expectedResourcesPath.put("subtractionPath", "/subtraction");
         expectedResourcesPath.put("multiplicationPath", "/multiplication");
         expectedResourcesPath.put("divisionPath", "/division");
+        expectedResourcesPath.put("operationsPath", "/operations");
         assertEquals(expectedResourcesPath.get("sumPath"), calculatorProperties.getSumPath());
         assertEquals(expectedResourcesPath.get("subtractionPath"), calculatorProperties.getSubtractionPath());
         assertEquals(expectedResourcesPath.get("multiplicationPath"), calculatorProperties.getMultiplicationPath());
         assertEquals(expectedResourcesPath.get("divisionPath"), calculatorProperties.getDivisionPath());
+        assertEquals(expectedResourcesPath.get("operationsPath"), calculatorProperties.getOperationsPath());
     }
 }

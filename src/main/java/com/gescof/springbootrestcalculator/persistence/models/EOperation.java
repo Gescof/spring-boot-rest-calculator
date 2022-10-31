@@ -1,6 +1,7 @@
 package com.gescof.springbootrestcalculator.persistence.models;
 
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
+import com.querydsl.core.annotations.QueryEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.joda.time.DateTime;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
+@QueryEntity
 @Document
 @Getter
 @Setter
