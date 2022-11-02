@@ -12,6 +12,7 @@ import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -133,6 +134,7 @@ public class CalculatorService {
      * @param pageSize      the page size to query
      * @return all the operations as a {@link List} containing {@link OutputElementDto} objects
      */
+    @Cacheable("operations")
     public OutputDto getOperations(
             final String id,
             final String operationType,
