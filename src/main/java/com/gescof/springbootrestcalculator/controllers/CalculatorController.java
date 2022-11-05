@@ -1,8 +1,8 @@
 package com.gescof.springbootrestcalculator.controllers;
 
-import com.gescof.springbootrestcalculator.models.InputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
+import com.gescof.springbootrestcalculator.models.inputs.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationElementDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationsDto;
 import com.gescof.springbootrestcalculator.services.CalculatorService;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.DateTime;
@@ -51,7 +51,7 @@ public class CalculatorController {
     }
 
     @GetMapping(value = "${com.gescof.calculator.api.operationsPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputOperationDto> getOperations(
+    public ResponseEntity<OutputOperationsDto> getOperations(
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String operationType,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime createdOnFrom,

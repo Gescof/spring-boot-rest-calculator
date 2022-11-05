@@ -1,9 +1,9 @@
 package com.gescof.springbootrestcalculator.services;
 
-import com.gescof.springbootrestcalculator.models.InputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
+import com.gescof.springbootrestcalculator.models.inputs.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationElementDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationsDto;
 import com.gescof.springbootrestcalculator.persistence.models.EOperation;
 import com.gescof.springbootrestcalculator.persistence.repositories.OperationRepository;
 import com.querydsl.core.types.Predicate;
@@ -255,7 +255,7 @@ class CalculatorServiceTest {
         Integer inputPageNumber = 1;
         Integer inputPageSize = 5;
         Page<EOperation> expectedQueriedResult = Page.empty();
-        OutputOperationDto expectedOutputOperationDto = OutputOperationDto.builder()
+        OutputOperationsDto expectedOutputOperationsDto = OutputOperationsDto.builder()
                 .operationsList(Collections.emptyList())
                 .totalResults(totalResults)
                 .pageNumber(inputPageNumber)
@@ -264,14 +264,14 @@ class CalculatorServiceTest {
         Mockito.when(mockedOperationRepository.findAll((Predicate) Mockito.any(), (Pageable) Mockito.any()))
                 .thenReturn(expectedQueriedResult);
 
-        OutputOperationDto getResult = calculatorService.getOperations(inputId, inputOperationType,
+        OutputOperationsDto getResult = calculatorService.getOperations(inputId, inputOperationType,
                 inputCreatedOnFrom, inputCreatedOnTo, inputUpdatedOnFrom, inputUpdatedOnTo,
                 inputPageNumber, inputPageSize);
         Mockito.verify(mockedOperationRepository, Mockito.times(1))
                 .findAll((Predicate) Mockito.any(), (Pageable) Mockito.any());
         Assertions.assertEquals(
                 getResult,
-                expectedOutputOperationDto
+                expectedOutputOperationsDto
         );
     }
 }
