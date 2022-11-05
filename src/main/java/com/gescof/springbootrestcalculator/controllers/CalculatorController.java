@@ -1,8 +1,8 @@
 package com.gescof.springbootrestcalculator.controllers;
 
-import com.gescof.springbootrestcalculator.models.InputDto;
-import com.gescof.springbootrestcalculator.models.OutputDto;
-import com.gescof.springbootrestcalculator.models.OutputElementDto;
+import com.gescof.springbootrestcalculator.models.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.OutputOperationDto;
+import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
 import com.gescof.springbootrestcalculator.services.CalculatorService;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.DateTime;
@@ -23,43 +23,49 @@ public class CalculatorController {
     private final CalculatorService calculatorService;
 
     @PostMapping(value = "${com.gescof.calculator.api.sumPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputElementDto> sumOperation(
-            @RequestBody final InputDto inputDto
+    public ResponseEntity<OutputOperationElementDto> sumOperation(
+            @RequestBody final InputOperationDto inputOperationDto
     ) {
-        return ResponseEntity.ok(calculatorService.sumOperation(inputDto));
+        return ResponseEntity.ok(calculatorService.sumOperation(inputOperationDto));
     }
 
     @PostMapping(value = "${com.gescof.calculator.api.subtractionPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputElementDto> subtractionOperation(
-            @RequestBody final InputDto inputDto
+    public ResponseEntity<OutputOperationElementDto> subtractionOperation(
+            @RequestBody final InputOperationDto inputOperationDto
     ) {
-        return ResponseEntity.ok(calculatorService.subtractionOperation(inputDto));
+        return ResponseEntity.ok(calculatorService.subtractionOperation(inputOperationDto));
     }
 
     @PostMapping(value = "${com.gescof.calculator.api.multiplicationPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputElementDto> multiplicationOperation(
-            @RequestBody final InputDto inputDto
+    public ResponseEntity<OutputOperationElementDto> multiplicationOperation(
+            @RequestBody final InputOperationDto inputOperationDto
     ) {
-        return ResponseEntity.ok(calculatorService.multiplicationOperation(inputDto));
+        return ResponseEntity.ok(calculatorService.multiplicationOperation(inputOperationDto));
     }
 
     @PostMapping(value = "${com.gescof.calculator.api.divisionPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputElementDto> divisionOperation(
-            @RequestBody final InputDto inputDto
+    public ResponseEntity<OutputOperationElementDto> divisionOperation(
+            @RequestBody final InputOperationDto inputOperationDto
     ) {
-        return ResponseEntity.ok(calculatorService.divisionOperation(inputDto));
+        return ResponseEntity.ok(calculatorService.divisionOperation(inputOperationDto));
     }
 
     @GetMapping(value = "${com.gescof.calculator.api.operationsPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OutputDto> getOperations(
+    public ResponseEntity<OutputOperationDto> getOperations(
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String operationType,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime createdOn,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime updatedOn,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime createdOnFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime createdOnTo,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime updatedOnFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) DateTime updatedOnTo,
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        return ResponseEntity.ok(calculatorService.getOperations(id, operationType, createdOn, updatedOn,
-                pageNumber, pageSize));
+        return ResponseEntity.ok(calculatorService.getOperations(
+                id, operationType,
+                createdOnFrom, createdOnTo,
+                updatedOnFrom, updatedOnTo,
+                pageNumber, pageSize
+        ));
     }
 }
