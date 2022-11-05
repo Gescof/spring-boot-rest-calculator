@@ -1,9 +1,9 @@
 package com.gescof.springbootrestcalculator.services;
 
-import com.gescof.springbootrestcalculator.models.InputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
+import com.gescof.springbootrestcalculator.models.inputs.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationElementDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationsDto;
 import com.gescof.springbootrestcalculator.persistence.models.QEOperation;
 import com.gescof.springbootrestcalculator.persistence.repositories.OperationRepository;
 import com.gescof.springbootrestcalculator.utils.OperationMapper;
@@ -12,7 +12,7 @@ import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -138,8 +138,8 @@ public class CalculatorService {
      * @param pageSize      the page size to query
      * @return all the operations as a {@link List} containing {@link OutputOperationElementDto} objects
      */
-    @Cacheable("operations")
-    public OutputOperationDto getOperations(
+    @CachePut(value = "operations")
+    public OutputOperationsDto getOperations(
             final String id,
             final String operationType,
             final DateTime createdOnFrom,
@@ -157,7 +157,7 @@ public class CalculatorService {
         var operationsList = new ArrayList<OutputOperationElementDto>();
         var result = operationRepository.findAll(predicate, pageable);
         result.forEach(eOperation -> operationsList.add(OperationMapper.mapEOperationToOutputDto(eOperation)));
-        return OutputOperationDto.builder()
+        return OutputOperationsDto.builder()
                 .operationsList(operationsList)
                 .totalResults(result.getTotalElements())
                 .pageNumber(pageable.getPageNumber())

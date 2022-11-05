@@ -1,9 +1,9 @@
 package com.gescof.springbootrestcalculator.controllers;
 
-import com.gescof.springbootrestcalculator.models.InputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationDto;
-import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
+import com.gescof.springbootrestcalculator.models.inputs.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationElementDto;
+import com.gescof.springbootrestcalculator.models.outputs.OutputOperationsDto;
 import com.gescof.springbootrestcalculator.services.CalculatorService;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
@@ -150,7 +150,7 @@ class CalculatorControllerTest {
                 .secondDecimal(new BigDecimal("94.73"))
                 .result(BigDecimal.valueOf(225.81))
                 .build();
-        OutputOperationDto expectedOutputOperationDto = OutputOperationDto.builder()
+        OutputOperationsDto expectedOutputOperationsDto = OutputOperationsDto.builder()
                 .operationsList(List.of(expectedOutputOperationElementDto))
                 .totalResults(totalResults)
                 .pageNumber(inputPageNumber)
@@ -159,9 +159,9 @@ class CalculatorControllerTest {
         Mockito.when(mockedCalculatorService.getOperations(Mockito.anyString(), Mockito.anyString(),
                         Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
                         Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(expectedOutputOperationDto);
+                .thenReturn(expectedOutputOperationsDto);
 
-        ResponseEntity<OutputOperationDto> divisionResult = calculatorController.getOperations(
+        ResponseEntity<OutputOperationsDto> divisionResult = calculatorController.getOperations(
                 inputId, inputOperationType,
                 inputCreatedOnFrom, inputCreatedOnTo, inputUpdatedOnFrom, inputUpdatedOnTo,
                 inputPageNumber, inputPageSize
@@ -171,7 +171,7 @@ class CalculatorControllerTest {
                         Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
                         Mockito.anyInt(), Mockito.anyInt());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputOperationDto),
+                ResponseEntity.ok(expectedOutputOperationsDto),
                 divisionResult
         );
     }

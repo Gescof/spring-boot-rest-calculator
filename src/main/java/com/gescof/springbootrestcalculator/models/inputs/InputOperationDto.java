@@ -1,4 +1,4 @@
-package com.gescof.springbootrestcalculator.models;
+package com.gescof.springbootrestcalculator.models.inputs;
 
 import lombok.Builder;
 import lombok.Data;
