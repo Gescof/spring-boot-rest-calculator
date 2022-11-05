@@ -1,8 +1,8 @@
 package com.gescof.springbootrestcalculator.controllers;
 
-import com.gescof.springbootrestcalculator.models.InputDto;
-import com.gescof.springbootrestcalculator.models.OutputDto;
-import com.gescof.springbootrestcalculator.models.OutputElementDto;
+import com.gescof.springbootrestcalculator.models.InputOperationDto;
+import com.gescof.springbootrestcalculator.models.OutputOperationDto;
+import com.gescof.springbootrestcalculator.models.OutputOperationElementDto;
 import com.gescof.springbootrestcalculator.models.enums.OperationType;
 import com.gescof.springbootrestcalculator.services.CalculatorService;
 import org.joda.time.DateTime;
@@ -33,24 +33,24 @@ class CalculatorControllerTest {
     void testShouldMakeSumOperationWithHttpStatus20O() {
         String firstDecimalStr = "2";
         String secondDecimalStr = "7";
-        InputDto inputDto = InputDto.builder()
+        InputOperationDto inputOperationDto = InputOperationDto.builder()
                 .firstDecimal(firstDecimalStr)
                 .secondDecimal(secondDecimalStr)
                 .build();
-        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
+        OutputOperationElementDto expectedOutputOperationElementDto = OutputOperationElementDto.builder()
                 .operationType(OperationType.SUM)
                 .firstDecimal(new BigDecimal(firstDecimalStr))
                 .secondDecimal(new BigDecimal(secondDecimalStr))
                 .result(BigDecimal.valueOf(9))
                 .build();
         Mockito.when(mockedCalculatorService.sumOperation(Mockito.any()))
-                .thenReturn(expectedOutputElementDto);
+                .thenReturn(expectedOutputOperationElementDto);
 
-        ResponseEntity<OutputElementDto> sumResult = calculatorController.sumOperation(inputDto);
+        ResponseEntity<OutputOperationElementDto> sumResult = calculatorController.sumOperation(inputOperationDto);
         Mockito.verify(mockedCalculatorService, Mockito.times(1))
                 .sumOperation(Mockito.any());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputElementDto),
+                ResponseEntity.ok(expectedOutputOperationElementDto),
                 sumResult
         );
     }
@@ -59,24 +59,24 @@ class CalculatorControllerTest {
     void testShouldMakeSubtractionOperationWithHttpStatus20O() {
         String firstDecimalStr = "-11";
         String secondDecimalStr = "3";
-        InputDto inputDto = InputDto.builder()
+        InputOperationDto inputOperationDto = InputOperationDto.builder()
                 .firstDecimal(firstDecimalStr)
                 .secondDecimal(secondDecimalStr)
                 .build();
-        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
+        OutputOperationElementDto expectedOutputOperationElementDto = OutputOperationElementDto.builder()
                 .operationType(OperationType.SUBTRACTION)
                 .firstDecimal(new BigDecimal(firstDecimalStr))
                 .secondDecimal(new BigDecimal(secondDecimalStr))
                 .result(BigDecimal.valueOf(-14))
                 .build();
         Mockito.when(mockedCalculatorService.subtractionOperation(Mockito.any()))
-                .thenReturn(expectedOutputElementDto);
+                .thenReturn(expectedOutputOperationElementDto);
 
-        ResponseEntity<OutputElementDto> subtractionResult = calculatorController.subtractionOperation(inputDto);
+        ResponseEntity<OutputOperationElementDto> subtractionResult = calculatorController.subtractionOperation(inputOperationDto);
         Mockito.verify(mockedCalculatorService, Mockito.times(1))
                 .subtractionOperation(Mockito.any());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputElementDto),
+                ResponseEntity.ok(expectedOutputOperationElementDto),
                 subtractionResult
         );
     }
@@ -85,24 +85,24 @@ class CalculatorControllerTest {
     void testShouldMakeMultiplicationOperationWithHttpStatus20O() {
         String firstDecimalStr = "20";
         String secondDecimalStr = "1";
-        InputDto inputDto = InputDto.builder()
+        InputOperationDto inputOperationDto = InputOperationDto.builder()
                 .firstDecimal(firstDecimalStr)
                 .secondDecimal(secondDecimalStr)
                 .build();
-        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
+        OutputOperationElementDto expectedOutputOperationElementDto = OutputOperationElementDto.builder()
                 .operationType(OperationType.MULTIPLICATION)
                 .firstDecimal(new BigDecimal(firstDecimalStr))
                 .secondDecimal(new BigDecimal(secondDecimalStr))
                 .result(BigDecimal.valueOf(20))
                 .build();
         Mockito.when(mockedCalculatorService.multiplicationOperation(Mockito.any()))
-                .thenReturn(expectedOutputElementDto);
+                .thenReturn(expectedOutputOperationElementDto);
 
-        ResponseEntity<OutputElementDto> multiplicationResult = calculatorController.multiplicationOperation(inputDto);
+        ResponseEntity<OutputOperationElementDto> multiplicationResult = calculatorController.multiplicationOperation(inputOperationDto);
         Mockito.verify(mockedCalculatorService, Mockito.times(1))
                 .multiplicationOperation(Mockito.any());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputElementDto),
+                ResponseEntity.ok(expectedOutputOperationElementDto),
                 multiplicationResult
         );
     }
@@ -111,24 +111,24 @@ class CalculatorControllerTest {
     void testShouldMakeDivisionOperationWithHttpStatus20O() {
         String firstDecimalStr = "15";
         String secondDecimalStr = "5";
-        InputDto inputDto = InputDto.builder()
+        InputOperationDto inputOperationDto = InputOperationDto.builder()
                 .firstDecimal(firstDecimalStr)
                 .secondDecimal(secondDecimalStr)
                 .build();
-        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
+        OutputOperationElementDto expectedOutputOperationElementDto = OutputOperationElementDto.builder()
                 .operationType(OperationType.DIVISION)
                 .firstDecimal(new BigDecimal(firstDecimalStr))
                 .secondDecimal(new BigDecimal(secondDecimalStr))
                 .result(BigDecimal.valueOf(3))
                 .build();
         Mockito.when(mockedCalculatorService.divisionOperation(Mockito.any()))
-                .thenReturn(expectedOutputElementDto);
+                .thenReturn(expectedOutputOperationElementDto);
 
-        ResponseEntity<OutputElementDto> divisionResult = calculatorController.divisionOperation(inputDto);
+        ResponseEntity<OutputOperationElementDto> divisionResult = calculatorController.divisionOperation(inputOperationDto);
         Mockito.verify(mockedCalculatorService, Mockito.times(1))
                 .divisionOperation(Mockito.any());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputElementDto),
+                ResponseEntity.ok(expectedOutputOperationElementDto),
                 divisionResult
         );
     }
@@ -137,35 +137,41 @@ class CalculatorControllerTest {
     void testShouldGetOperationsWithHttpStatus20O() {
         String inputId = "1234567890abc";
         String inputOperationType = "SUM";
-        DateTime inputCreatedOn = DateTime.parse("2022-10-31T18:36:01.608Z");
-        DateTime inputUpdatedOn = DateTime.parse("2022-11-01T06:59:12.380Z");
+        DateTime inputCreatedOnFrom = DateTime.parse("2022-10-31T18:36:01.608Z");
+        DateTime inputCreatedOnTo = DateTime.parse("2023-10-31T18:36:01.608Z");
+        DateTime inputUpdatedOnFrom = DateTime.parse("2022-11-01T06:59:12.380Z");
+        DateTime inputUpdatedOnTo = DateTime.parse("2023-11-01T06:59:12.380Z");
         Long totalResults = 20L;
         Integer inputPageNumber = 0;
         Integer inputPageSize = 10;
-        OutputElementDto expectedOutputElementDto = OutputElementDto.builder()
+        OutputOperationElementDto expectedOutputOperationElementDto = OutputOperationElementDto.builder()
                 .operationType(OperationType.SUM)
                 .firstDecimal(new BigDecimal("131.08"))
                 .secondDecimal(new BigDecimal("94.73"))
                 .result(BigDecimal.valueOf(225.81))
                 .build();
-        OutputDto expectedOutputDto = OutputDto.builder()
-                .operationsList(List.of(expectedOutputElementDto))
+        OutputOperationDto expectedOutputOperationDto = OutputOperationDto.builder()
+                .operationsList(List.of(expectedOutputOperationElementDto))
                 .totalResults(totalResults)
                 .pageNumber(inputPageNumber)
                 .pageSize(inputPageSize)
                 .build();
         Mockito.when(mockedCalculatorService.getOperations(Mockito.anyString(), Mockito.anyString(),
-                        Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(expectedOutputDto);
+                        Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
+                        Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(expectedOutputOperationDto);
 
-        ResponseEntity<OutputDto> divisionResult = calculatorController.getOperations(
-                inputId, inputOperationType, inputCreatedOn, inputUpdatedOn, inputPageNumber, inputPageSize
+        ResponseEntity<OutputOperationDto> divisionResult = calculatorController.getOperations(
+                inputId, inputOperationType,
+                inputCreatedOnFrom, inputCreatedOnTo, inputUpdatedOnFrom, inputUpdatedOnTo,
+                inputPageNumber, inputPageSize
         );
         Mockito.verify(mockedCalculatorService, Mockito.times(1))
-                .getOperations(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.any(),
+                .getOperations(Mockito.anyString(), Mockito.anyString(),
+                        Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
                         Mockito.anyInt(), Mockito.anyInt());
         Assertions.assertEquals(
-                ResponseEntity.ok(expectedOutputDto),
+                ResponseEntity.ok(expectedOutputOperationDto),
                 divisionResult
         );
     }

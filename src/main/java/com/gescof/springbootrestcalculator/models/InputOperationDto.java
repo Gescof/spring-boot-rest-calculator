@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class InputDto {
+public class InputOperationDto {
     private String firstDecimal;
     private String secondDecimal;
 }

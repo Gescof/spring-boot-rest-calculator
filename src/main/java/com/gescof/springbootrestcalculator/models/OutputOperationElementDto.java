@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Builder
 @Data
-public class OutputElementDto {
+public class OutputOperationElementDto {
     private String id;
     private OperationType operationType;
     private BigDecimal firstDecimal;

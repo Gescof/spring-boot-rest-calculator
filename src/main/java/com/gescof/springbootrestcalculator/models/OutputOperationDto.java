@@ -7,8 +7,8 @@ import java.util.List;
 
 @Builder
 @Data
-public class OutputDto {
-    private List<OutputElementDto> operationsList;
+public class OutputOperationDto {
+    private List<OutputOperationElementDto> operationsList;
     private Long totalResults;
     private Integer pageNumber;
     private Integer pageSize;
